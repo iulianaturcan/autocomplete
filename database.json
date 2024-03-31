@@ -1,0 +1,14 @@
+{
+  "items": [
+    { "id": 1, "country": "United States", "timeZone": "Eastern Standard Time (EST)" },
+    { "id": 2, "country": "United Kingdom", "timeZone": "Greenwich Mean Time (GMT)" },
+    { "id": 3, "country": "India", "timeZone": "Indian Standard Time (IST)" },
+    { "id": 4, "country": "Australia", "timeZone": "Australian Eastern Standard Time (AEST)" },
+    { "id": 5, "country": "Brazil", "timeZone": "Brasília Time (BRT)" },
+    { "id": 6, "country": "Canada", "timeZone": "Eastern Standard Time (EST)" },
+    { "id": 7, "country": "China", "timeZone": "China Standard Time (CST)" },
+    { "id": 8, "country": "Germany", "timeZone": "Central European Time (CET)" },
+    { "id": 9, "country": "Japan", "timeZone": "Japan Standard Time (JST)" },
+    { "id": 10, "country": "Russia", "timeZone": "Moscow Standard Time (MSK)" }
+  ]
+}
