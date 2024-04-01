@@ -1,4 +1,4 @@
-import { TimezoneOption } from "../types";
+import { TimezoneOption } from "../../types";
 
 interface DropdownProps {
   data: TimezoneOption[];
@@ -38,6 +38,7 @@ const Dropdown = ({
     }
 
     const textFragments = country.split(regex);
+    // If the query is found in the text, we highlight it
     return textFragments.map((part, index) =>
       regex.test(part) ? (
         <strong key={index}>{part}</strong>

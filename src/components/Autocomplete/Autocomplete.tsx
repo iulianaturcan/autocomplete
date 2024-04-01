@@ -2,17 +2,17 @@ import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
 import { getCountriesByName } from "../../services/getCountriesByName";
 import Dropdown from "../Dropdown/Dropdown";
 import { useDebounce } from "../../hooks/useDebounce";
-import { TimezoneOption } from "../types";
+import { TimezoneOption } from "../../types";
 
 import "./Autocomplete.css";
 
 const Autocomplete = () => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
   const [data, setData] = useState<TimezoneOption[]>([]);
   const [selectedItem, setSelectedItem] = useState<TimezoneOption | null>(null);
-  const [focusedIndex, setFocusedIndex] = useState(-1);
-  const [showItems, setShowItems] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [showItems, setShowItems] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const debouncedInputValue = useDebounce(inputValue, 500);
 
@@ -51,12 +51,15 @@ const Autocomplete = () => {
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    // This handles the keyboard navigation for the dropdown items
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       const direction = event.key === "ArrowDown" ? 1 : -1;
       const nextIndex = focusedIndex + direction;
       if (nextIndex >= 0 && nextIndex < data.length) {
         setFocusedIndex(nextIndex);
+
+        // Scroll the next item into view
         const itemElement = document.getElementById(`item-${nextIndex}`);
         if (itemElement) {
           itemElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
