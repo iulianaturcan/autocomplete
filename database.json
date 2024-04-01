@@ -1,14 +1,72 @@
 {
   "items": [
-    { "id": 1, "country": "United States", "timeZone": "Eastern Standard Time (EST)" },
-    { "id": 2, "country": "United Kingdom", "timeZone": "Greenwich Mean Time (GMT)" },
-    { "id": 3, "country": "India", "timeZone": "Indian Standard Time (IST)" },
-    { "id": 4, "country": "Australia", "timeZone": "Australian Eastern Standard Time (AEST)" },
-    { "id": 5, "country": "Brazil", "timeZone": "Brasília Time (BRT)" },
-    { "id": 6, "country": "Canada", "timeZone": "Eastern Standard Time (EST)" },
-    { "id": 7, "country": "China", "timeZone": "China Standard Time (CST)" },
-    { "id": 8, "country": "Germany", "timeZone": "Central European Time (CET)" },
-    { "id": 9, "country": "Japan", "timeZone": "Japan Standard Time (JST)" },
-    { "id": 10, "country": "Russia", "timeZone": "Moscow Standard Time (MSK)" }
+    {
+      "id": 1,
+      "country": "United States",
+      "timezone": "Eastern Standard Time (EST)"
+    },
+    {
+      "id": 2,
+      "country": "United Kingdom",
+      "timezone": "Greenwich Mean Time (GMT)"
+    },
+    { "id": 3, "country": "India", "timezone": "Indian Standard Time (IST)" },
+    {
+      "id": 4,
+      "country": "Australia",
+      "timezone": "Australian Eastern Standard Time (AEST)"
+    },
+    { "id": 5, "country": "Brazil", "timezone": "Brasília Time (BRT)" },
+    { "id": 6, "country": "Canada", "timezone": "Eastern Standard Time (EST)" },
+    { "id": 7, "country": "China", "timezone": "China Standard Time (CST)" },
+    {
+      "id": 8,
+      "country": "Germany",
+      "timezone": "Central European Time (CET)"
+    },
+    { "id": 9, "country": "Japan", "timezone": "Japan Standard Time (JST)" },
+    { "id": 10, "country": "Russia", "timezone": "Moscow Standard Time (MSK)" },
+    {
+      "id": 11,
+      "country": "France",
+      "timezone": "Central European Time (CET)"
+    },
+    { "id": 12, "country": "Italy", "timezone": "Central European Time (CET)" },
+    { "id": 13, "country": "Spain", "timezone": "Central European Time (CET)" },
+    {
+      "id": 14,
+      "country": "Portugal",
+      "timezone": "Western European Time (WET)"
+    },
+    {
+      "id": 15,
+      "country": "Netherlands",
+      "timezone": "Central European Time (CET)"
+    },
+    {
+      "id": 16,
+      "country": "Belgium",
+      "timezone": "Central European Time (CET)"
+    },
+    {
+      "id": 17,
+      "country": "Switzerland",
+      "timezone": "Central European Time (CET)"
+    },
+    {
+      "id": 18,
+      "country": "Sweden",
+      "timezone": "Central European Time (CET)"
+    },
+    {
+      "id": 19,
+      "country": "Norway",
+      "timezone": "Central European Time (CET)"
+    },
+    {
+      "id": 20,
+      "country": "Denmark",
+      "timezone": "Central European Time (CET)"
+    }
   ]
 }

@@ -2,16 +2,36 @@
   --primary-color: #007bff;
   --secondary-color: #f2f2f2;
   --highlight-color: #0056b3;
+  --white-color: #fff;
   --border-color: #ccc;
   --text-color: #999;
 }
 
 .autocomplete {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 30%;
+  width: 402px;
   margin: 50px auto;
+  position: relative;
+}
+
+.loader {
+  width: 24px;
+  height: 24px;
+  margin: 12px auto;
+  display: block;
+  border: 2px solid var(--border-color);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .autocomplete input {
@@ -29,15 +49,24 @@
   border-color: var(--primary-color);
 }
 
-.autocomplete-list { 
+.autocomplete-items {
+  background: var(--white-color);
+  position: absolute;
+  z-index: 10;
+  border: 1px solid rgb(209 213 219);
+  border-top-width: 0;
   list-style: none;
+  margin-top: 0;
+  min-height: 50px;
+  max-height: 200px;
+  overflow-y: auto;
   padding-left: 0;
-  width: 100%;
+  width: 400px;
+  border-radius: 0 0 4px 4px;
 }
 
 .autocomplete-item {
   padding: 8px;
-  border: 1px solid var(--border-color);
   border-radius: 4px;
   margin-bottom: 4px;
   cursor: pointer;
@@ -50,7 +79,7 @@
 
 .autocomplete-item.selected {
   background-color: var(--primary-color);
-  color: #fff;
+  color: var(--white-color);
 }
 
 .autocomplete-item.selected:hover {
@@ -61,15 +90,10 @@
   background-color: var(--secondary-color);
 }
 
-.input-wrapper {
-  position: relative;
-  width: 100%;
-}
-
 .clear-button {
   position: absolute;
   right: 4px;
-  top: 50%;
+  top: 16px;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -83,6 +107,14 @@
   color: var(--primary-color);
 }
 
+.clear-button:focus,
+.clear-button:focus-visible {
+  outline: none;
+}
+
 .empty-message {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
 }

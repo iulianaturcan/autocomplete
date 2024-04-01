@@ -1,87 +1,68 @@
-import { useState, useEffect, ChangeEvent, KeyboardEvent, useRef  } from 'react';
-import { getCountriesByName } from '../../services/getCountriesByName';
-import useDebounce from '../../hooks/useDebounce';
+import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
+import { getCountriesByName } from "../../services/getCountriesByName";
+import Dropdown from "../Dropdown/Dropdown";
+import { useDebounce } from "../../hooks/useDebounce";
+import { TimezoneOption } from "../types";
 
-import './Autocomplete.css';
-
-interface TimezoneOption {
-  id: number;
-  country: string;
-  timeZone: string;
-}
+import "./Autocomplete.css";
 
 const Autocomplete = () => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState<TimezoneOption[]>([]);
   const [selectedItem, setSelectedItem] = useState<TimezoneOption | null>(null);
   const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [showItems, setShowItems] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const debouncedInputValue = useDebounce(inputValue, 300);
+  const debouncedInputValue = useDebounce(inputValue, 500);
 
   useEffect(() => {
-    if (debouncedInputValue === '') {
+    if (debouncedInputValue === "") {
+      setLoading(false);
       setData([]);
       return;
     }
 
     const fetchData = async () => {
-      const data = await getCountriesByName(debouncedInputValue);
-      setData(data);
+      try {
+        const data = await getCountriesByName(debouncedInputValue);
+        setData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
   }, [debouncedInputValue]);
-  
-  const handleInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
     setInputValue(event.target.value);
-
-    if(event.target.value === '') {
-      setSelectedItem(null);
-    }
-
+    setShowItems(true);
     setFocusedIndex(-1);
-  };
-
-  const escapeRegExp = (string: string) => {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  };
-
-  const highlightText = (text: string, query: string): JSX.Element[] => {
-    if (text === `${selectedItem?.country} (${selectedItem?.timeZone})`) {
-      return [<span>{text}</span>];
-    }
-
-    const escapedQuery = escapeRegExp(query);
-    const regex = new RegExp(`(${escapedQuery})`, 'ig');
-    if (query.trim() === '') {
-      return [<span>{text}</span>];
-    }
-
-    const textFragments = text.split(regex);
-    return textFragments.map((part) =>
-      regex.test(part) ? <strong>{part}</strong> : <span>{part}</span>
-    );
   };
 
   const handleItemClick = (item: TimezoneOption) => {
     setSelectedItem(item);
-    setInputValue(`${item.country} (${item.timeZone})`);
+    setInputValue(item.country);
+    setShowItems(false);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'ArrowDown') {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
-      if (focusedIndex < data.length - 1) {
-        setFocusedIndex(focusedIndex + 1);
+      const direction = event.key === "ArrowDown" ? 1 : -1;
+      const nextIndex = focusedIndex + direction;
+      if (nextIndex >= 0 && nextIndex < data.length) {
+        setFocusedIndex(nextIndex);
+        const itemElement = document.getElementById(`item-${nextIndex}`);
+        if (itemElement) {
+          itemElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
       }
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (focusedIndex > 0) {
-        setFocusedIndex(focusedIndex - 1);
-      }
-    } else if (event.key === 'Enter') {
+    } else if (event.key === "Enter") {
       event.preventDefault();
       if (focusedIndex >= 0 && focusedIndex < data.length) {
         handleItemClick(data[focusedIndex]);
@@ -90,49 +71,41 @@ const Autocomplete = () => {
   };
 
   const handleInputClear = () => {
-    setInputValue('');
+    setInputValue("");
     setSelectedItem(null);
+    setShowItems(false);
+  };
+
+  const handleInputBlur = () => {
+    setShowItems(false);
   };
 
   return (
-    <div className="autocomplete" onBlur={() => setFocusedIndex(-1)}>
-      <div className="input-wrapper">
-        <input
-          type="text"
-          placeholder="Search your country or timezone..."
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          ref={inputRef}
-        />
-        {inputValue && (
-          <button className="clear-button" onClick={handleInputClear}>
-            &#10006;
-          </button>
-        )}
-      </div>
-      <ul className="autocomplete-list">
-        {data.length === 0 ? (
-          <li className="empty-message">No results found.</li>
-        ) : 
-        data.map((item, index) => {
-            const itemClasses = [
-              'autocomplete-item',
-              selectedItem?.id === item.id ? 'selected' : '',
-              focusedIndex === index ? 'focused' : '',
-            ].filter(Boolean).join(' ');
-
-            return (
-              <li
-                key={item.id}
-                className={itemClasses}
-                onClick={() => handleItemClick(item)}
-              >
-                {highlightText(`${item.country} (${item.timeZone})`, inputValue)}
-              </li>
-            );
-          })}
-      </ul>
+    <div className="autocomplete" onBlur={handleInputBlur}>
+      <input
+        type="text"
+        placeholder="Search your country..."
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+      />
+      {inputValue && (
+        <button className="clear-button" onClick={handleInputClear}>
+          &#10006;
+        </button>
+      )}
+      {showItems && (
+        <ul className="autocomplete-items">
+          <Dropdown
+            data={data}
+            loading={loading}
+            selectedItem={selectedItem}
+            focusedIndex={focusedIndex}
+            handleItemClick={handleItemClick}
+            inputValue={inputValue}
+          />
+        </ul>
+      )}
     </div>
   );
 };
